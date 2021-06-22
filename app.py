@@ -15,16 +15,16 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 @app.route("/", methods=['GET','POST'])
 def index():
     if request.method=='POST':
-        print(123)
+        # print(123)
         text=request.form['text']
         img=request.files['file']
         if img:
-            print(img)
+            # print(img)
             filename = secure_filename(img.filename)
-            print(filename)
-            print(img.content_type)
+            # print(filename)
+            # print(img.content_type)
             cdn_url=cdn_domain+filename
-            print(cdn_url)
+            # print(cdn_url)
 			
         img_link=save_to_s3(AWSAccessKeyId,AWSSecretKey,img,cdn_domain)
         cursor,db=check_db_and_table(rds_host,rds_user,rds_password)
@@ -77,14 +77,14 @@ def check_db_and_table(host,user,password):
     table_name='posts'
     cursor.execute('show tables')
     tables=cursor.fetchall() # [(table,),(table,)]
-    print(tables)
+    # print(tables)
     ct=0
     
     for table in tables:
         if len(tables)==0:
             break
         if table_name in table[0]:
-            print(f'table "{table_name}" exist')
+            # print(f'table "{table_name}" exist')
             break
         else:
             ct+=1
@@ -95,7 +95,7 @@ def check_db_and_table(host,user,password):
             text TEXT CHARACTER SET utf8mb4 NOT NULL,
             img_link VARCHAR(255)
         )""")
-        print(f'table "{table_name}" created')
+        # print(f'table "{table_name}" created')
     return cursor,db
     
 def save_to_rds(cursor,db,text,url):
@@ -107,7 +107,7 @@ def save_to_rds(cursor,db,text,url):
 def select_from_rds(cursor):
     cursor.execute('select * from posts')
     get_data=cursor.fetchall()
-    print(get_data)
+    # print(get_data)
     posts=[]
     for data in get_data:
         dict_data={}    
